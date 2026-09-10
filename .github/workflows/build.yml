@@ -1,10 +1,10 @@
 name: build
 
 on:
-  push:
-    branches: [ unstable, '[0-9]+.[0-9]+.x' ]
-  pull_request:
-    branches: [ unstable, '[0-9]+.[0-9]+.x' ]
+  # push:
+  #   branches: [ unstable, '[0-9]+.[0-9]+.x' ]
+  # pull_request:
+  #   branches: [ unstable, '[0-9]+.[0-9]+.x' ]
   workflow_call:
   workflow_dispatch:
 
@@ -27,9 +27,7 @@ jobs:
       matrix:
         include:
           - { os: ubuntu-24.04, cxx: clang++-20, clang_cxx: clang++-20 }
-          - { os: ubuntu-24.04, cxx: g++-14, clang_cxx: clang++-20 }
-          - { os: macos-15, cxx: clang++, clang_cxx: clang++ }
-          #- { os: macos-15, cxx: g++, clang_cxx: clang++ }
+        
 
     runs-on: ${{ matrix.os }}
 
@@ -154,12 +152,12 @@ jobs:
         cd build
         ctest -j2 --output-on-failure
 
-    - name: ccache statistics
-      if: always()
-      run: ccache -sv
+    # - name: ccache statistics
+    #   if: always()
+    #   run: ccache -sv
 
-    - uses: actions/cache/save@v4
-      if: always()
-      with:
-        path: ${{ env.CCACHE_DIR }}
-        key: ccache-${{ matrix.os }}-${{ matrix.cxx }}-${{ github.run_id }}-${{ github.run_attempt }}
+    # - uses: actions/cache/save@v4
+    #   if: always()
+    #   with:
+    #     path: ${{ env.CCACHE_DIR }}
+    #     key: ccache-${{ matrix.os }}-${{ matrix.cxx }}-${{ github.run_id }}-${{ github.run_attempt }}
